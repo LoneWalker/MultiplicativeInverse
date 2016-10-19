@@ -1,0 +1,27 @@
+8
+1 1 0 1 1 0 0 0 1
+1 0 1 1 0 1 0 1 0
+
+n=8
+m(x) = X^8 + X^4 + X^3 + X^1 + 1
+f(x) = X^7 + X^5 + X^3 + X^2 + 1
+
+
+
+
+
+8
+1 1 0 1 1 0 0 0 1
+1 0 1 1 0 0 0 0 0
+
+n=8
+m(x) = X^8 + X^4 + X^3 + X^1 + 1
+f(x) = X^3 + X^2 + 1
+
+
+            File format:
+            --------------------
+            line1: n
+            line2: coefficients of m(x) in one line starting from a0 to an separated by space e.g for a 3 degree polynomial m(x)= x^3+x+1 input would be 1 1 0 1
+            line3: coefficients of f(x) in one line starting from a0 to an separated by space
+             */
