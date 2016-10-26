@@ -2,7 +2,7 @@
  * Created by azhar on 10/18/16.
  */
 
-// we assume that coefficient a0 is stored in index 0 and highest coefficient is stored in index (len-1)
+// we assume that coefficient a0 is stored in index 0 and highest coefficient is stored in index degree
 public class Polynomial {
 
 
@@ -63,6 +63,11 @@ public class Polynomial {
 
     }
 
+    public void copy(Polynomial src){
+        for (int i=degree; i>=0; i--){
+            this.polynomial[i].ai=src.polynomial[i].ai;
+        }
+    }
     public int highestTerm(){
 
         for (int i=degree; i>=0; i--){

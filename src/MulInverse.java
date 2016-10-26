@@ -10,12 +10,14 @@ public class MulInverse {
 
         Polynomial divisor= fx;
         Polynomial dividend=new Polynomial(mx);
-        Polynomial quotient= gcd(dividend,divisor);
+        Polynomial a_i= new Polynomial(mx.degree);
+        Polynomial b_i= new Polynomial(mx.degree);
+        Polynomial reminder= extnd_gcd(dividend, divisor, a_i, b_i);
 
-        if (quotient==null){
+        if (reminder==null){
             System.out.println("No valid inverse was found");
         }else {
-            System.out.println("Inverse polynomial is: "+quotient);
+            System.out.println("Inverse polynomial is: "+b_i);
         }
 
         return inv_mx;
@@ -23,7 +25,7 @@ public class MulInverse {
     }
 
     // basically this function implements GCD algorithm
-    private Polynomial gcd(Polynomial dividend, Polynomial divisor){
+    private Polynomial extnd_gcd(Polynomial dividend, Polynomial divisor, Polynomial a_i, Polynomial b_i){
         Polynomial quotient= new Polynomial(dividend.degree);
 
         int comp_val=dividend.compare(divisor);
@@ -41,9 +43,18 @@ public class MulInverse {
             return null;
         }else {
             if (reminder.isIdentity()){
-                return quotient;
+                a_i.updateCoefficient(0,1);
+                b_i.copy(quotient);
+                return reminder;
             }else{
-                return gcd(divisor, reminder);
+                Polynomial gcd= extnd_gcd(divisor, reminder, a_i, b_i);
+                Polynomial temp_a_i=new Polynomial(b_i);
+                b_i.copy(add(a_i, mul(b_i, quotient)));
+                a_i.copy(temp_a_i);
+
+                //System.out.println("printing b_i="+b_i);
+
+                return gcd;
             }
         }
 
@@ -65,7 +76,7 @@ public class MulInverse {
             int temp_dividend_degree=temp_dividend.highestTerm();
             int diff=temp_dividend_degree-divisor_degree;
             quotient.updateCoefficient(diff,1);
-            Polynomial divisor_times_quotient= mul(divisor,diff);
+            Polynomial divisor_times_quotient= mul_single(divisor, diff);
             reminder=diff(temp_dividend,divisor_times_quotient);
             temp_dividend=reminder;
 
@@ -85,7 +96,7 @@ public class MulInverse {
 
         return result;
     }
-    private Polynomial mul(Polynomial p, int factor){
+    private Polynomial mul_single(Polynomial p, int factor){
 
         Polynomial result= new Polynomial(p.degree);
 
@@ -94,6 +105,27 @@ public class MulInverse {
                 result.updateCoefficient(i + factor, 1);
             }
         }
+        return result;
+    }
+
+    Polynomial mul(Polynomial a, Polynomial b){
+        Polynomial result= new Polynomial(a.degree);
+        for (int i= a.degree; i>=0; i--){
+            if (b.polynomial[i].ai!=0){
+                result=add(result,mul_single(a,i));
+            }
+        }
+
+        return result;
+
+    }
+
+    Polynomial add(Polynomial a, Polynomial b){
+        Polynomial result= new Polynomial(a.degree);
+        for (int i=0; i<= a.degree; i++){
+            result.polynomial[i].ai=xor(a.polynomial[i].ai,b.polynomial[i].ai);
+        }
+
         return result;
     }
 
